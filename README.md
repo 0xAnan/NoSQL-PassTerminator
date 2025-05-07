@@ -1,34 +1,41 @@
-Here's a complete and professional `README.md` for your GitHub repository, tailored to the current script you're using:
+# 🔐 NoSQL PassTerminator
+
+*Automated Blind NoSQL Injection Password Cracker*
+By **0xTensai**
 
 ---
 
-## 🔐 NoSQL PassTerminator
+### 📌 Description
 
-*Automated Blind NoSQL Injection Password Cracker for MongoDB-style queries*
-by **0xTensai**
-
----
-
-### 🧠 Description
-
-**NoSQL BruteMaster 3000** is a blind NoSQL injection tool that performs character-by-character brute-forcing on password fields using JavaScript-style injection payloads. It works by detecting the password length, then brute-forcing each character based on server responses.
+**NoSQL PassTerminator** is a blind injection tool designed to extract passwords from NoSQL-based web apps (typically MongoDB-style injections). It automates the detection of password length and performs character-by-character guessing using time-efficient multithreading.
 
 ---
 
-### ⚙️ Features
+### 🧪 Injection Strategy
+
+It uses JavaScript-based injection such as:
+
+```javascript
+' && this.password[0] == 'a' || 'a'=='b
+```
+
+---
+
+### ✅ Features
 
 * 🔍 Blind password length detection
-* 🧩 Character-by-character brute-force on NoSQL injection points
-* ✅ Supports POST requests from raw HTTP request files (Burp-style)
-* 🎯 Uses fail-string logic to infer correct guesses
-* 💡 Customizable charset and casing
+* 🧠 Smart multithreaded brute-force logic
+* 📦 Takes raw HTTP request files (Burp-style)
+* 🎯 Fail-string or raw response comparison modes
+* 🧾 Save cracked passwords to file
+* 🔡 Custom charset and casing options
 
 ---
 
-### 📥 Requirements
+### ⚙️ Requirements
 
 * Python 3.x
-* `requests` library
+* `requests`
   Install with:
 
 ```bash
@@ -40,79 +47,85 @@ pip install requests
 ### 🚀 Usage
 
 ```bash
-python3 nosql.py -r request.txt -f "user not found" -p user -n administrator
+python3 nosql.py -r request.req -p user -n administrator -f "user not found"
+```
+
+Or with response comparison:
+
+```bash
+python3 nosql.py -r request.req -p user -n administrator --compare-mode
 ```
 
 ---
 
 ### 🧾 Arguments
 
-| Flag                  | Description                                                     |
-| --------------------- | --------------------------------------------------------------- |
-| `-r`, `--request`     | Path to raw HTTP request file (Burp format)                     |
-| `-f`, `--fail-string` | Failure indicator text in the response (e.g., "user not found") |
-| `-p`, `--param`       | Name of the POST parameter to inject into (e.g., `user`)        |
-| `-n`, `--username`    | The username whose password you want to brute-force             |
-| `--max-length`        | Maximum password length to attempt (default: 30)                |
+| Flag                  | Description                                                                 |
+| --------------------- | --------------------------------------------------------------------------- |
+| `-r`, `--request`     | Path to raw HTTP request file (Burp format)                                 |
+| `-p`, `--param`       | Name of the POST parameter to inject (e.g., `user`)                         |
+| `-n`, `--username`    | Username value to attack (e.g., `administrator`)                            |
+| `-f`, `--fail-string` | Failure message shown on incorrect guess (not needed with `--compare-mode`) |
+| `--compare-mode`      | Use response difference instead of fail-string                              |
+| `--max-length`        | Max password length to try (default: `30`)                                  |
+| `-o`, `--output`      | Save cracked password to a file                                             |
 
 ---
 
-### 📦 Example
+### 💡 Charset Selection (Interactive Prompt)
 
-```bash
-python3 nosql.py \
-  -r login.req \
-  -f "Could not find user" \
-  -p user \
-  -n administrator
+During execution, you will be prompted to choose:
+
+**Character set:**
+
+* `1` → Alphabets only
+* `2` → Alphabets + Numbers
+* `3` → Alphabets + Numbers + Special Characters
+
+**Casing:**
+
+* `1` → Lowercase
+* `2` → Uppercase
+* `3` → Both
+
+---
+
+### 🔍 Sample Injection Payload
+
+```http
+user=admin' && this.password[2] == 'm' || 'a'=='b
 ```
 
-The tool will:
+---
 
-* Detect the password length of the `administrator` account
-* Brute-force the password using blind injection
-* Print the password once found
+### 📥 Example `.req` File Format
+
+```http
+POST /user/lookup HTTP/1.1
+Host: vulnerable.site
+Content-Type: application/x-www-form-urlencoded
+Cookie: session=abc123
+
+user=admin
+```
 
 ---
 
-### 🔠 Character Set Options (interactive)
+### ✅ Example Run
 
-When prompted:
-
-* Choose charset:
-
-  * 1 = alphabets only (a–z or A–Z)
-  * 2 = alphabets + numbers
-  * 3 = alphabets + numbers + special characters
-* Choose casing:
-
-  * 1 = lowercase
-  * 2 = uppercase
-  * 3 = both
-
----
-
-### 🧪 Injection Logic
-
-For each character:
-
-```js
-username' && this.password[0] == 'a' || 'a'=='b
+```bash
+python3 nosql.py -r login.req -p user -n administrator -f "user not found"
 ```
 
 ---
 
 ### ⚠️ Disclaimer
 
-This tool is intended **only** for educational and authorized security testing purposes.
-**Do not** use it on systems you don't have permission to test.
+This tool is for **educational purposes** and **authorized testing only**.
+Do **not** use it on targets you do not own or have permission to assess.
 
 ---
 
 ### 👨‍💻 Author
 
-Built with 💻 by [**0xTensai**](https://github.com/0xTensai)
-
----
-
-Let me know if you'd like a sample Burp-style `.req` file or want a logo/badge for the repo.
+**🧠 0xTensai** — Offensive security, automation, and tool development.
