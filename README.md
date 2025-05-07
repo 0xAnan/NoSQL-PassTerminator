@@ -92,7 +92,7 @@ During execution, you will be prompted to choose:
 
 ### 🔍 Sample Injection Payload
 
-```http
+```
 user=admin' && this.password[2] == 'm' || 'a'=='b
 ```
 
@@ -100,7 +100,7 @@ user=admin' && this.password[2] == 'm' || 'a'=='b
 
 ### 📥 Example `.req` File Format
 
-```http
+```
 POST /user/lookup HTTP/1.1
 Host: vulnerable.site
 Content-Type: application/x-www-form-urlencoded
