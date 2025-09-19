@@ -1,6 +1,6 @@
 // approve_anan.js
 (async () => {
-  const TARGET_USERNAME = 'anan1';
+  const TARGET_USERNAME = 'anan';
 
   // fetch the admin dashboard HTML
   const r = await fetch('/admin/dashboard', { credentials: 'same-origin' });
